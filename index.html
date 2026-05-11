@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Hub de roteiros de viagem, cultura, gastronomia e experiências do Histórias em Rotas." />
+  <title>Histórias em Rotas | Roteiros de Viagem</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #fbf4e8;
+      --cream-2: #f1e1c9;
+      --paper: rgba(255,255,255,.84);
+      --paper-solid: #fffaf2;
+      --ink: #1d1712;
+      --muted: #766a60;
+      --green: #173f33;
+      --green-2: #285a48;
+      --gold: #c79a45;
+      --gold-2: #e1c58a;
+      --terracotta: #a65942;
+      --blue: #1b5267;
+      --shadow: 0 26px 80px rgba(29, 23, 18, .16);
+      --soft-shadow: 0 16px 46px rgba(29, 23, 18, .10);
+      --radius: 30px;
+      --radius-sm: 18px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(199,154,69,.20), transparent 28%),
+        radial-gradient(circle at 88% 14%, rgba(23,63,51,.16), transparent 34%),
+        linear-gradient(180deg, #fff9ef 0%, var(--cream) 48%, #f6ead8 100%);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { width: 100%; display: block; object-fit: cover; }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .14;
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.42'/%3E%3C/svg%3E");
+    }
+
+    .nav {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      width: min(var(--max), calc(100% - 28px));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 12px 14px 12px 18px;
+      border: 1px solid rgba(255,255,255,.58);
+      border-radius: 999px;
+      background: rgba(255,255,255,.60);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 18px 45px rgba(29,23,18,.12);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      color: var(--green);
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--green), var(--gold));
+      color: white;
+      box-shadow: 0 8px 20px rgba(23,63,51,.22);
+    }
+
+    .nav-links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+    .nav-links a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      font-size: .84rem;
+      font-weight: 800;
+      color: rgba(29,23,18,.72);
+      transition: .25s ease;
+    }
+    .nav-links a:hover { background: var(--green); color: white; }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: grid;
+      align-items: end;
+      padding: 132px 22px 56px;
+      overflow: hidden;
+      color: white;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.74)),
+        url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1900&q=85') center/cover;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 190px;
+      background: linear-gradient(180deg, transparent, var(--cream));
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      width: min(var(--max), 100%);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 28px;
+      align-items: end;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: max-content;
+      gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,.48);
+      border-radius: 999px;
+      background: rgba(255,255,255,.13);
+      backdrop-filter: blur(12px);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .78rem;
+      font-weight: 900;
+      animation: fadeUp .8s ease both;
+    }
+
+    h1, h2, h3, h4 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      line-height: 1.03;
+      letter-spacing: -.035em;
+    }
+
+    h1 {
+      max-width: 920px;
+      margin: 20px 0 18px;
+      font-size: clamp(3rem, 8vw, 7.2rem);
+      text-shadow: 0 20px 60px rgba(0,0,0,.28);
+      animation: fadeUp .9s ease .08s both;
+    }
+
+    .hero p {
+      max-width: 740px;
+      margin: 0;
+      color: rgba(255,255,255,.88);
+      font-size: clamp(1.04rem, 1.6vw, 1.32rem);
+      animation: fadeUp .9s ease .16s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+      animation: fadeUp .9s ease .24s both;
+    }
+
+    .hero-panel {
+      padding: 24px;
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.14);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      animation: floatIn 1s ease .3s both;
+    }
+
+    .hero-panel strong {
+      display: block;
+      color: var(--gold-2);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      font-size: .82rem;
+    }
+
+    .hero-panel .big {
+      margin: 8px 0 10px;
+      font-size: 2.2rem;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .hero-panel span { color: rgba(255,255,255,.82); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(29,23,18,.08);
+      background: var(--green);
+      color: white;
+      font-weight: 900;
+      box-shadow: 0 13px 32px rgba(23,63,51,.24);
+      transition: .22s ease;
+      cursor: pointer;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 18px 42px rgba(23,63,51,.28); }
+    .btn.gold { background: linear-gradient(135deg, var(--gold), #d9b66b); color: #251a08; }
+    .btn.ghost { background: rgba(255,255,255,.14); color: white; border-color: rgba(255,255,255,.42); }
+    .btn.secondary { background: white; color: var(--green); }
+    .btn.small { padding: 9px 12px; font-size: .84rem; box-shadow: none; }
+
+    main { position: relative; z-index: 1; }
+    section { padding: 82px 22px; }
+    .wrap { width: min(var(--max), 100%); margin: 0 auto; }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr .85fr;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    h2 { font-size: clamp(2.2rem, 5vw, 4.6rem); color: var(--green); }
+    h3 { font-size: clamp(1.55rem, 2.7vw, 2.2rem); color: var(--green); }
+    h4 { font-size: 1.22rem; color: var(--green); letter-spacing: -.02em; }
+    .lead { color: var(--muted); margin: 0; font-size: 1.04rem; }
+
+    .stats {
+      margin-top: -28px;
+      position: relative;
+      z-index: 5;
+      padding-top: 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat {
+      padding: 20px;
+      border: 1px solid rgba(255,255,255,.52);
+      border-radius: 24px;
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--soft-shadow);
+    }
+
+    .stat strong { display: block; font-size: 1.7rem; color: var(--green); line-height: 1; }
+    .stat span { font-size: .86rem; color: var(--muted); font-weight: 700; }
+
+    .grid { display: grid; gap: 22px; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      border: 1px solid rgba(29,23,18,.08);
+      background: rgba(255,255,255,.72);
+      color: var(--green);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: .22s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active { background: var(--green); color: white; }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(29,23,18,.08);
+      border-radius: var(--radius);
+      background: var(--paper);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--soft-shadow);
+      transition: .28s ease;
+    }
+
+    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow); }
+    .card-img { height: 250px; }
+    .card-body { padding: 24px; }
+
+    .route-card.featured {
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      min-height: 430px;
+    }
+
+    .route-card.featured .card-img { height: 100%; min-height: 430px; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      width: max-content;
+      margin-bottom: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(199,154,69,.17);
+      color: #795517;
+      font-size: .76rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .muted { color: var(--muted); }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 18px;
+    }
+
+    .chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(23,63,51,.09);
+      color: var(--green);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .empty-card {
+      border: 1px dashed rgba(23,63,51,.28);
+      background: rgba(255,255,255,.42);
+    }
+
+    .creator-card {
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(29,23,18,.08);
+      background: linear-gradient(135deg, rgba(255,255,255,.88), rgba(241,225,201,.74));
+      box-shadow: var(--soft-shadow);
+      transition: .25s ease;
+    }
+
+    .creator-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .creator-card strong { color: var(--terracotta); }
+
+    .quote-band {
+      padding: 96px 22px;
+      background:
+        linear-gradient(180deg, rgba(251,244,232,.2), rgba(251,244,232,.86)),
+        url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1900&q=85') center/cover fixed;
+      text-align: center;
+    }
+
+    .quote {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.2vw, 4.1rem);
+      line-height: 1.1;
+      color: var(--green);
+      text-shadow: 0 12px 35px rgba(255,255,255,.45);
+    }
+
+    .newsletter {
+      background:
+        linear-gradient(135deg, rgba(23,63,51,.96), rgba(40,90,72,.94)),
+        url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1800&q=85') center/cover;
+      color: white;
+    }
+
+    .newsletter h2, .newsletter h3 { color: white; }
+    .newsletter .lead { color: rgba(255,255,255,.76); }
+
+    .link-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+      transition: .22s ease;
+    }
+
+    .link-item:hover { background: rgba(255,255,255,.18); transform: translateX(4px); }
+    .link-item span { color: rgba(255,255,255,.74); font-weight: 700; }
+
+    .footer {
+      padding: 46px 22px;
+      background: var(--ink);
+      color: white;
+    }
+
+    .footer .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer p { margin: 5px 0 0; color: rgba(255,255,255,.68); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes floatIn {
+      from { opacity: 0; transform: translateY(28px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .reveal { opacity: 0; transform: translateY(26px); transition: .7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hero-inner, .section-head, .route-card.featured { grid-template-columns: 1fr; }
+      .hero-panel { display: none; }
+      .grid-2, .grid-3, .grid-4, .stats-grid { grid-template-columns: 1fr; }
+      .route-card.featured .card-img { min-height: 280px; }
+      section { padding: 66px 18px; }
+      .hero { padding: 116px 18px 42px; }
+      .footer .wrap { display: block; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="noise"></div>
+
+  <nav class="nav">
+    <a class="brand" href="#top" aria-label="Início">
+      <span class="brand-mark">✦</span>
+      <span>Histórias em Rotas</span>
+    </a>
+    <div class="nav-links">
+      <a href="#roteiros">Roteiros</a>
+      <a href="#categorias">Categorias</a>
+      <a href="#destaques">Destaques</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#links">Links</a>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">Viagens · Cultura · Gastronomia · História</span>
+        <h1>Roteiros para viajar melhor</h1>
+        <p>Um hub visual para reunir roteiros completos, mapas, experiências gastronômicas, histórias locais e ideias de conteúdo para quem ama viajar com intenção.</p>
+        <div class="hero-actions">
+          <a class="btn gold" href="#roteiros">Ver roteiros</a>
+          <a class="btn ghost" href="#categorias">Explorar categorias</a>
+          <a class="btn ghost" href="#links">Links rápidos</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <strong>Seu portal de viagens</strong>
+        <div class="big">roteiros vivos</div>
+        <span>Use este site como página principal da bio: cada card leva para um roteiro específico publicado no GitHub Pages.</span>
+      </aside>
+    </div>
+  </header>
+
+  <main>
+    <section class="stats">
+      <div class="wrap stats-grid">
+        <div class="stat reveal"><strong>Brasil</strong><span>roteiros nacionais</span></div>
+        <div class="stat reveal"><strong>Europa</strong><span>mercados, cultura e trem</span></div>
+        <div class="stat reveal"><strong>Food</strong><span>bares e restaurantes</span></div>
+        <div class="stat reveal"><strong>Reels</strong><span>conteúdo para redes</span></div>
+      </div>
+    </section>
+
+    <section id="roteiros">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2>Roteiros em destaque</h2>
+          <p class="lead">Cards principais para colocar seus links publicados. Basta trocar o endereço do botão pelo link do GitHub Pages de cada roteiro.</p>
+        </div>
+
+        <article class="card route-card featured reveal" data-category="brasil">
+          <img class="card-img" src="https://images.unsplash.com/photo-1597290282695-edc43d0e7129?auto=format&fit=crop&w=1400&q=85" alt="Cataratas do Iguaçu">
+          <div class="card-body">
+            <span class="tag">Roteiro completo · Brasil</span>
+            <h3>Curitiba, Morretes & Foz do Iguaçu</h3>
+            <p class="muted">Viagem romântica e cultural de André e Ricardo, com livrarias, cafés, passeio de trem pela Serra do Mar, Cataratas, Itaipu e gastronomia de fronteira.</p>
+            <div class="meta">
+              <span class="chip">05 a 14 de junho</span>
+              <span class="chip">Curitiba Literária</span>
+              <span class="chip">Morretes de trem</span>
+              <span class="chip">Foz cinematográfica</span>
+            </div>
+            <a class="btn" href="#" target="_blank" rel="noopener">Abrir roteiro</a>
+          </div>
+        </article>
+
+        <div class="toolbar reveal" style="margin-top:34px;">
+          <button class="filter-btn active" data-filter="all">Todos</button>
+          <button class="filter-btn" data-filter="brasil">Brasil</button>
+          <button class="filter-btn" data-filter="europa">Europa</button>
+          <button class="filter-btn" data-filter="gastronomia">Gastronomia</button>
+          <button class="filter-btn" data-filter="conteudo">Conteúdo</button>
+        </div>
+
+        <div class="grid grid-3" id="routeGrid">
+          <article class="card route-card reveal" data-category="europa">
+            <img class="card-img" src="https://images.unsplash.com/photo-1519677100203-a0e668c92439?auto=format&fit=crop&w=1200&q=85" alt="Europa no inverno">
+            <div class="card-body">
+              <span class="tag">Europa · Natal</span>
+              <h3>Mercados de Natal na Europa</h3>
+              <p class="muted">Roteiro para visitar cidades natalinas com Portugal como base, incluindo Espanha, França, Alemanha, Luxemburgo e mais.</p>
+              <div class="meta"><span class="chip">Inverno</span><span class="chip">Trem</span><span class="chip">Cultura</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card reveal" data-category="europa">
+            <img class="card-img" src="https://images.unsplash.com/photo-1509356843151-3e7d96241e11?auto=format&fit=crop&w=1200&q=85" alt="Países Nórdicos">
+            <div class="card-body">
+              <span class="tag">Europa · 2027</span>
+              <h3>Países Nórdicos</h3>
+              <p class="muted">Capitais nórdicas, cruzeiros, museus, arquitetura, paisagens e experiências urbanas para casal.</p>
+              <div class="meta"><span class="chip">15 dias</span><span class="chip">Cruzeiro</span><span class="chip">Design</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card reveal" data-category="brasil">
+            <img class="card-img" src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&w=1200&q=85" alt="Rio de Janeiro">
+            <div class="card-body">
+              <span class="tag">Brasil</span>
+              <h3>Rio de Janeiro</h3>
+              <p class="muted">Base para roteiros com vista aérea, praias, mirantes, museus, bares e experiências urbanas.</p>
+              <div class="meta"><span class="chip">Paisagem</span><span class="chip">Foto</span><span class="chip">Cidade</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card reveal" data-category="brasil">
+            <img class="card-img" src="https://images.unsplash.com/photo-1589396575653-c09c794ff6a6?auto=format&fit=crop&w=1200&q=85" alt="Uruguai">
+            <div class="card-body">
+              <span class="tag">Uruguai · 2026</span>
+              <h3>Montevidéu, Colonia & Punta</h3>
+              <p class="muted">Roteiro cultural e gastronômico pelo Uruguai, com cidade histórica, museus, vinho, praia e bons restaurantes.</p>
+              <div class="meta"><span class="chip">Cultura</span><span class="chip">Gastronomia</span><span class="chip">Casal</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card reveal" data-category="gastronomia">
+            <img class="card-img" src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=1200&q=85" alt="Gastronomia de viagem">
+            <div class="card-body">
+              <span class="tag">Gastronomia</span>
+              <h3>Bares & Restaurantes</h3>
+              <p class="muted">Uma curadoria por cidade com lugares para jantar, beber, fotografar e transformar refeições em conteúdo.</p>
+              <div class="meta"><span class="chip">Food</span><span class="chip">Drinks</span><span class="chip">Reels</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card reveal" data-category="conteudo">
+            <img class="card-img" src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=85" alt="Criação de conteúdo">
+            <div class="card-body">
+              <span class="tag">Creator</span>
+              <h3>Guias para Instagram/TikTok</h3>
+              <p class="muted">Hooks, roteiros de narração, cenas, storytelling, poses e ideias para transformar viagens em vídeos e carrosséis.</p>
+              <div class="meta"><span class="chip">Reels</span><span class="chip">TikTok</span><span class="chip">Storytelling</span></div>
+              <a class="btn small" href="#" target="_blank" rel="noopener">Adicionar link</a>
+            </div>
+          </article>
+
+          <article class="card route-card empty-card reveal" data-category="brasil">
+            <div class="card-body">
+              <span class="tag">Novo roteiro</span>
+              <h3>Próxima viagem</h3>
+              <p class="muted">Use este card como modelo para adicionar qualquer novo roteiro publicado: Orlando, Europa, Brasil, América do Sul ou viagens gastronômicas.</p>
+              <div class="meta"><span class="chip">Modelo</span><span class="chip">Editar link</span></div>
+              <a class="btn small" href="#">Duplicar ideia</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="categorias">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2>Categorias do blog</h2>
+          <p class="lead">Organize seus roteiros por estilo de viagem. Isso ajuda o visitante a escolher rapidamente o conteúdo que mais combina com ele.</p>
+        </div>
+        <div class="grid grid-4">
+          <div class="creator-card reveal"><h3>Roteiros completos</h3><p>Itinerários dia a dia, hotéis, restaurantes, mapas e deslocamentos.</p></div>
+          <div class="creator-card reveal"><h3>Viagem a dois</h3><p>Experiências românticas, jantares especiais, hotéis e fotos de casal.</p></div>
+          <div class="creator-card reveal"><h3>Cultura & História</h3><p>Museus, centros históricos, livrarias, arquitetura e narrativas locais.</p></div>
+          <div class="creator-card reveal"><h3>Gastronomia</h3><p>Bares, cafés, restaurantes, pratos típicos, drinks e experiências à mesa.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="destaques">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <h2>Destaques editoriais</h2>
+          <p class="lead">Blocos prontos para apresentar seu estilo de conteúdo e reforçar a identidade do projeto.</p>
+        </div>
+        <div class="grid grid-3">
+          <article class="card reveal">
+            <img class="card-img" src="https://images.unsplash.com/photo-1494515843206-f3117d3f51b7?auto=format&fit=crop&w=1200&q=85" alt="Trem de viagem">
+            <div class="card-body"><span class="tag">Travel by train</span><h3>Rotas de trem</h3><p class="muted">Roteiros pensados para quem ama deslocamentos cênicos, janelas, paisagens e narrativa de viagem.</p></div>
+          </article>
+          <article class="card reveal">
+            <img class="card-img" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=85" alt="Restaurante">
+            <div class="card-body"><span class="tag">Food & Drinks</span><h3>Onde comer e beber</h3><p class="muted">Restaurantes, bares e cafés selecionados para viver e registrar boas experiências.</p></div>
+          </article>
+          <article class="card reveal">
+            <img class="card-img" src="https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1200&q=85" alt="Livros e cultura">
+            <div class="card-body"><span class="tag">Cultura</span><h3>Histórias por trás dos lugares</h3><p class="muted">Curiosidades, arquitetura, museus e contexto histórico para enriquecer cada roteiro.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="quote-band">
+      <p class="quote reveal">“Viajar é colecionar lugares, mas contar histórias é transformar cada destino em memória.”</p>
+    </section>
+
+    <section id="sobre">
+      <div class="wrap grid grid-2">
+        <div class="reveal">
+          <h2>Sobre o projeto</h2>
+          <p class="lead">O Histórias em Rotas nasce como um hub para reunir roteiros autorais, combinando viagem, cultura, gastronomia, paisagens e criação de conteúdo.</p>
+        </div>
+        <div class="creator-card reveal">
+          <h3>Como usar este site</h3>
+          <p>Publique cada roteiro em um repositório do GitHub Pages e coloque o link no botão correspondente. Assim, este hub vira sua página principal para Instagram, TikTok, WhatsApp e futuras parcerias.</p>
+          <p><strong>Exemplo:</strong> usuario.github.io/roteiro-curitiba-foz</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="newsletter" id="links">
+      <div class="wrap grid grid-2">
+        <div class="reveal">
+          <span class="tag">Links rápidos</span>
+          <h2>Todos os roteiros em um só lugar</h2>
+          <p class="lead">Essa seção funciona como uma bio premium. Você pode colocar aqui os links principais, redes sociais e roteiros mais acessados.</p>
+        </div>
+        <div class="link-list reveal">
+          <a class="link-item" href="#"><strong>Curitiba, Morretes & Foz</strong><span>Abrir roteiro →</span></a>
+          <a class="link-item" href="#"><strong>Mercados de Natal na Europa</strong><span>Em breve →</span></a>
+          <a class="link-item" href="#"><strong>Países Nórdicos 2027</strong><span>Em breve →</span></a>
+          <a class="link-item" href="#"><strong>Instagram</strong><span>@seuperfil →</span></a>
+          <a class="link-item" href="#"><strong>TikTok</strong><span>@seuperfil →</span></a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      <div>
+        <strong>Histórias em Rotas</strong>
+        <p>Roteiros, cultura, gastronomia e conteúdo de viagem.</p>
+      </div>
+      <a class="btn secondary" href="#top">Voltar ao topo</a>
+    </div>
+  </footer>
+
+  <script>
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: .12 });
+    revealEls.forEach(el => observer.observe(el));
+
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.route-card');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+
+        cards.forEach(card => {
+          if (filter === 'all' || card.dataset.category === filter) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
